@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Validator</title>
+        
+        <meta charset="utf-8">
+        
+        <script src="http://tomalexander.co.nz/regression-js/jquery.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="http://tomalexander.co.nz/regression-js/site.css">
+        <link rel="stylesheet" type="text/css" href="http://prismjs.com/prism.css" data-noprefix >
+        <script src="http://prismjs.com/prism.js "data-default-language="markup"></script>
+
+        <style>
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        ul li{
+            height: 25px;
+            margin-bottom: 5px;
+        }
+        ul code{
+            float: right;
+            clear: both;
+        }
+        </style>
+        
+    </head>
+    <body class="language-javascript">
+        <div id="init">
+        <h1><strong>Validator</strong></h1>
+        <p>
+            <strong>Validator</strong> is a jQuery plugin that emulates the <a href="http://laravel.com/docs/validation">validation class</a> found in the laravel framework.
+        </p>
+    
+            
+            <h2>Usage</h2>
+           <p>
+                The validator plugin will return an instance of the validator object.
+            </p>
+               <h3>Basic Validation Example</h3>
+            <pre><code>
+var contactForm = $('form').validator({
+    'name' : 'required|max:12'
+});
+            </code></pre>
+            
+            <h3>Without a jQuery collection</h3>
+            <p>When a jQuery collection is not being used as the data source, you can use an object as the first argument as the data source.</p>
+            <pre><code>
+var contactForm = $.validator(
+    {'name' : 'Alice'},
+    {'name' : 'required|max:12'}
+);
+            </code></pre>
+            <p>The <code>fails</code> and <code>passes</code> functions are used to perform the validation once a Validator object has been created. These methods take an anonymous function as there only arguments which will be called once the validation occurs.</p>
+            <pre><code>
+contactForm.fails(function( messages ){
+     // The given data did not pass validation
+});
+            </code></pre>
+            <p>The context of these functions is the data source. They also returns a <code>Boolean</code> value.
+            <pre><code>
+if(contactForm.fails()){
+     // The given data did not pass validation
+}   </code></pre>
+            <h3>Error Messages</h3>
+
+            <h4><code>all()</code></h4>
+            <p>Retrives all the messages on all fields</p>
+
+            <h4><code>allElements()</code></h4>
+            <p>Retrives all the elements with messages</p>
+
+            <h4><code>get( String field )</code></h4>
+            <p>Retrives all the messages on a particular field</p>  
+
+            <h4><code>any()</code></h4>
+            <p>returns true if any fields have any messages</p>
+
+            <h4><code>count()</code></h4>
+            <p>returns the number of messages over all the fields</p>
+
+            <h4><code>first( String field )</code></h4>
+            <p>gets the first message on a particular element</p>
+
+            <h4><code>has( String field )</code></h4>
+            <p>checks if a given field has any messages</p>
+
+            <h3>Custom Messages</h3>
+            <p>A JSON array of custom error messages can be passed as a third argument. Occurances of <code>:attribute</code> will be replaced with the field name as well as rule parameters when applicable.</p>
+
+            <pre><code>
+var contactForm = $(this).validator(
+    {'name'    :'required|between:1,10|alpha_dash'},
+    {'between' :':attribute must be between :min and :max'}
+);
+                </code></pre>
+
+            <h4>Specifying A Custom Message For A Given Attribute</h4>
+            <pre><code>
+var contactForm = $(this).validator(
+    {'name'         :'required|between:1,10|alpha_dash'},
+    {'name.between' :':attribute must be between :min and :max'}
+);
+            </code></pre>  
+
+            <h3>Validation Rules</h3>
+            <p>Most of the Validation rules in the laravel framework are also avaliable in this plugin, with the exceptions of Active URL, Date Format, Exists (Database), Image (File), MIME Types and Unique (Database). You can find more information on the validation rules in the <a href="http://laravel.com/docs/validation#available-validation-rules">laravel documentation</a>
+            <ul>
+                <li>After (Date) <code>'after:date'</code></li>
+                <li>alpha_dash   <code>'alpha'</code></li>
+                <li>Alpha Dash   <code>'alpha_dash'</code></li>
+                <li>Alpha Numeric<code>'alpha_num'</code></li>
+                <li>Before (Date)<code>'before:date'</code></li>
+                <li>Between      <code>'between:min,max'</code></li>
+                <li>Confirmed    <code>'confirmed'</code></li>
+                <li>Date         <code>'date'</code></li>
+                <li>Different    <code>'different:field'</code></li>
+                <li>E-Mail       <code>'email'</code></li>
+                <li>In           <code>'in:foo,bar...'</code></li>
+                <li>Integer      <code>'Integer'</code></li>
+                <li>IP Address   <code>'ip'</code></li>
+                <li>Max          <code>'max:value'</code></li>
+                <li>Min          <code>'min:value'</code></li>
+                <li>Not In       <code>'not_in:foo,bar...'</code></li>
+                <li>Numeric      <code>'numeric'</code></li>
+                <li>Regular Expression<code>'regex:pattern'</code></li>
+                <li>Required     <code>'required'</code></li>
+                <li>Required If  <code>'required_if:field,value'</code></li>
+                <li>Required With<code>'required_with:foo,bar...'</code></li>
+                <li>Required Without<code>'required_without:foo,bar...'</code></li>
+                <li>Same         <code>'same:field'</code></li>
+                <li>Size         <code>'size:value'</code></li>
+                <li>URL          <code>'url'</code></li>
+            </ul>
+            <h3>Custom Rules</h3>
+        <p>The extend function takes three arguments. the final argument is an array of message placeholders. The rule parameters are mapped onto this array. In the example below, occurances of <code>':foo'</code> get replaced with the value of <code>parameters[0]</code></p>
+<pre><code>
+contactForm.extend('myRule', function(attribute, value, parameters){
+     // Return Boolean
+}, [':foo', ':bar']);
+            </code></pre>
+        <h3>Example</h3>
+<p>The following toggles the error class on fields with errors and submits the form once it has been successfully validated.
+        <pre><code>     $('form').submit(function(e){
+            e.preventDefault();
+
+            $('form input').removeClass('error');
+            
+            var contactForm = $(this).validator({
+                'name' :'required|max:12',
+                'email' : 'required|email'
+            });
+
+            contactForm.fails(function( messages ){
+                messages.allElements().addClass('error');
+            });
+
+            contactForm.passes(function(){
+                $(this).submit();
+            });
+        });
+    </code></pre>
+            <div id="footer">
+                <hr>
+                    <a  target="_blank" href="http://opensource.org/licenses/MIT">MIT License</a> - <a  target="_blank" href="https://github.com/Tom-Alexander/validator">Github</a>
+            </div>
+        </div>
+                
+    </body>
+</html>

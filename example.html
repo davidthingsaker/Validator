@@ -1,0 +1,46 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="src/jquery.validator.js"></script>
+
+<script>
+	$(function(){
+
+		$('form').submit(function(e){
+
+			e.preventDefault();
+
+			$('form input').css('border', '3px solid blue');
+
+			var contactForm = $(this).validator({
+				'name' :'required|max:12|alpha_dash',
+				'email' : 'required|email'
+			});
+
+			contactForm.fails(function( errors ){
+				errors.allElements().each(function(){
+					console.log($(this).data('messages'));
+				});
+				errors.allElements().css('border', '3px solid red');
+			});
+
+			contactForm.passes(function(){
+				$(this).submit();
+			});
+
+		});
+
+	});
+</script>
+</head>
+<body>
+	<div>
+		<form>
+			<p><input name="name" placeholder="test" /></p>
+			<p><input name="email" placeholder="test" /></p>
+			<p><input name="Phone Number" placeholder="test" /></p>
+			<p><input name="foo" placeholder="test" /></p>
+			<button>Go!</button>
+		</form>
+</body>
+</html>
