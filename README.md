@@ -131,4 +131,4 @@ $('form').submit(function(e){
 });
 ```
 
-This repo was initially forked from @Tom-Alexander
+This repo was initially forked from [Tom-Alexander](https://github.com/Tom-Alexander/Validator)
