@@ -1,0 +1,8 @@
+{
+    "name": "laravel-validator"
+  , "version": "0.0.1"
+  , "main": ["src/validator.js"]
+  , "dependencies": {
+            "jquery" : ">= 1.5.1"
+  }
+}
