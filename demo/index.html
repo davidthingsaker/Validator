@@ -14,8 +14,6 @@
 
 			e.preventDefault();
 
-			$('form input').css('border', '3px solid blue');
-
 			// Reset error messages on second submit
 			$('.error-message').each(function(index, value){
 				value.innerText = ' ';
@@ -30,7 +28,6 @@
 				errors.allElements().each(function(index, value){
 					$(value).siblings('.help-inline')[0].innerText = errors.all()[index];
 				})
-				errors.allElements().css('border', '3px solid red');
 			});
 
 			contactForm.passes(function(){
