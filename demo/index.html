@@ -16,15 +16,20 @@
 
 			$('form input').css('border', '3px solid blue');
 
+			// Reset error messages on second submit
+			$('.error-message').each(function(index, value){
+				value.innerText = ' ';
+			})
+
 			var contactForm = $(this).validator({
 				'name' :'required|max:12|alpha_dash',
 				'email' : 'required|email'
 			});
 
 			contactForm.fails(function( errors ){
-				errors.allElements().each(function(){
-					console.log($(this).data('messages'));
-				});
+				errors.allElements().each(function(index, value){
+					$(value).siblings('.help-inline')[0].innerText = errors.all()[index];
+				})
 				errors.allElements().css('border', '3px solid red');
 			});
 
@@ -47,11 +52,12 @@
 
 			<form>
 				<div class="form-group">
-					<label for="name">Name</label>
+					<label for="name">Name</label> <span class="error-message help-inline text-danger"></span>
 					<input name="name" type="name" class="form-control" id="name">
+
 				</div>
 				<div class="form-group">
-					<label for="email">Email address</label>
+					<label for="email">Email address</label> <span class="error-message help-inline text-danger"></span>
 					<input name="email" type="email" class="form-control" id="email">
 				</div>
 				<div class="checkbox">
