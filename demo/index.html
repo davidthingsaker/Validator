@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Laravel Validator</title>
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+	<script type="text/javascript" src="../bower_components/jquery/jquery.js"></script>
+	<script type="text/javascript" src="../src/validator.js"></script>
+</head>
+<script>
+	$(function(){
+
+		$('form').submit(function(e){
+
+			e.preventDefault();
+
+			$('form input').css('border', '3px solid blue');
+
+			var contactForm = $(this).validator({
+				'name' :'required|max:12|alpha_dash',
+				'email' : 'required|email'
+			});
+
+			contactForm.fails(function( errors ){
+				errors.allElements().each(function(){
+					console.log($(this).data('messages'));
+				});
+				errors.allElements().css('border', '3px solid red');
+			});
+
+			contactForm.passes(function(){
+				$(this).submit();
+			});
+
+		});
+
+	});
+</script>
+<body>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">Laravel Validator</a>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="well">
+
+			<form>
+				<div class="form-group">
+					<label for="name">Name</label>
+					<input name="name" type="name" class="form-control" id="name">
+				</div>
+				<div class="form-group">
+					<label for="email">Email address</label>
+					<input name="email" type="email" class="form-control" id="email">
+				</div>
+				<div class="checkbox">
+					<label>
+					</label>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
