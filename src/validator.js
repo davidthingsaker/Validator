@@ -13,7 +13,7 @@
 */
 
 	if( typeof define === 'function' && define.amd ) {
-		define('validator', ['jquery'], function (jQuery) {
+		define('laravel-validator', ['jquery'], function (jQuery) {
 			return main();
 		});
 	} else main();
